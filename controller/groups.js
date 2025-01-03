@@ -23,10 +23,6 @@ async function recordGroupID(event) {
     }
 
     await sendToGroup(groupId, "群組已記錄，可以開始使用 The Hope Notify 囉！");
-    console.log(`群組 ID: ${groupId}, 訊息為: ${message.text}, timestamp: ${event.timestamp}`);
-
-    const res = await Groups.getAll();
-    console.log("all groups: ", res);
     return;
 };
 

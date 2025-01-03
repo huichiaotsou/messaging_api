@@ -4,6 +4,8 @@ const sendToGroup = require("../utils/line");
 async function recordGroupID(lineEvents) {
     for (const event of lineEvents) {
         const { groupId, message } = event.source;
+        console.log("event.source: ", event.source);
+        
         if (event.source.type !== 'group') {
             // 若非群組訊息則跳過
             continue;

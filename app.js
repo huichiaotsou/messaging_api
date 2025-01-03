@@ -1,24 +1,25 @@
 const express = require("express");
+require("./model/database");
 const { Client, middleware } = require("@line/bot-sdk");
-
 const config = require("./config.json");
-
 const app = express();
 const client = new Client(config.line);
+const recordGroupID = require("./controller/groups");
+
 
 app.get('/webhook', (req, res) => {
   res.status(200).send('OK');
 });
 
-app.post('/webhook', middleware(config.line),(req, res) => {
-  const events = req.body.events;
-  events.forEach(event => {
-      if (event.source.type === 'group') {
-          const {groupId, userId, message} = event.source;
-          console.log(`群組 ID: ${groupId}, 訊息為 ${message}`);
-      }
-  });
-  res.status(200).send('OK');
+
+// LINE Webhook, for registering Group ID
+app.post('/webhook', middleware(config.line), async (req, res) => {
+  try {
+    await recordGroupID(req.body.events)
+    res.status(200).send('OK');
+  } catch(err) {
+    console.error(err)
+  }
 });
 
 // 啟動伺服器

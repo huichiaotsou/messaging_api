@@ -19,8 +19,7 @@ async function recordGroupID(event) {
     const result = await Groups.insert(groupId, groupName);
     if (!result.success){
         await sendToGroup(groupId, "群組記錄失敗，請洽管理員");
-        console.error(groupId, "群組記錄失敗，請洽管理員");
-        throw new Error(`fail to record group, id: ${groupId}`)
+        throw new Error(`fail to record group, id: ${groupId}, error message: ${result.error}`)
     }
 
     await sendToGroup(groupId, "群組已記錄，可以開始使用 The Hope Notify 囉！");

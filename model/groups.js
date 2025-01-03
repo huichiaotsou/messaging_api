@@ -1,11 +1,17 @@
 const dbConn = require("./database");
 
-async function insertGroup(id, name) {
+async function insertOrUpdateGroup(id, name) {
     try {
-        await dbConn.runAsync('INSERT INTO groups (id, name) VALUES (?, ?)', [id, name]);
-        return { success: true, message: '資料插入成功' }; // 回傳成功訊息
+        // 插入資料，若主鍵衝突則更新
+        await dbConn.runAsync(`
+            INSERT INTO groups (id, name)
+            VALUES (?, ?)
+            ON CONFLICT(id) DO UPDATE SET name = excluded.name
+        `, [id, name]);
+
+        return { success: true, message: '資料插入或更新成功' }; // 返回成功訊息
     } catch (err) {
-        return { success: false, message: '插入資料失敗', error: err.message }; // 回傳錯誤訊息
+        return { success: false, message: '插入或更新資料失敗', error: err.message }; // 返回錯誤訊息
     }
 }
 
@@ -19,6 +25,6 @@ async function getAllGroups() {
 }
 
 module.exports = { 
-    insert: insertGroup,
+    insert: insertOrUpdateGroup,
     getAll: getAllGroups
 };

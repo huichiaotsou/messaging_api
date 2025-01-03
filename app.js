@@ -6,6 +6,9 @@ const config = require("./config.json");
 const app = express();
 const client = new Client(config.line);
 
+app.get('/webhook', (req, res) => {
+  res.status(200).send('OK');
+});
 
 app.post('/webhook', middleware(config.line),(req, res) => {
   const events = req.body.events;

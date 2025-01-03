@@ -23,7 +23,6 @@ async function sendToGroup(groupID, message) {
     try {
         // 發送 POST 請求
         const response = await axios.post(API_URL, data, { headers });
-        console.log('訊息發送成功:', response.data);
     } catch (error) {
         console.error('發送訊息失敗:', error.response?.data || error.message);
     }

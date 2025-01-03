@@ -15,7 +15,7 @@ app.get('/webhook', (req, res) => {
 // LINE Webhook, for registering Group ID
 app.post('/webhook', middleware(config.line), async (req, res) => {
   try {
-    await recordGroupID(req.body.events)
+    await recordGroupID(req.body.events[0])
     res.status(200).send('OK');
   } catch(err) {
     console.error(err)

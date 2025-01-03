@@ -9,13 +9,13 @@ async function recordGroupID(event) {
         // 若非群組訊息則跳過
         return;
     }
-    if (!message.includes("我要記錄群組 ID, 這個群組的名稱是: ")) {
+    if (!message.includes("記錄群組 ID, 這個群組的名稱是:")) {
         // 如果回覆的訊息沒有「記錄群組ID」跳過
         return;
     }
 
     // Store LINE Group ID & Group Name
-    const groupName = message.split("這個群組的名稱是: ")[1];
+    const groupName = message.split(": ")[1];
     const result = await Groups.insert(groupId, groupName);
     if (!result.success){
         await sendToGroup(groupId, "群組記錄失敗，請洽管理員");
@@ -31,7 +31,7 @@ async function getAllGroups(event) {
         // 呼叫 Groups 模組查詢所有群組
         const result = await Groups.getAll();
         if (!result.success) {
-            return { success: false, message: "取得群組資料失敗", error: result.error };
+            throw new Error("failed to get all groups", result.error)
         }
 
         // 格式化群組列表
@@ -43,7 +43,7 @@ async function getAllGroups(event) {
         // 返回格式化的群組資料
         return { success: true, data: formattedGroups };
     } catch (err) {
-        return { success: false, message: "取得群組資料時發生錯誤", error: err.message };
+        throw new Error("failed to get all groups", result.error)
     }
 }
 

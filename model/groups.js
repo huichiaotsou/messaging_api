@@ -6,7 +6,7 @@ async function insertOrUpdateGroup(id, name) {
         await dbConn.runAsync(`
             INSERT INTO groups (line_group_id, name)
             VALUES (?, ?)
-            ON CONFLICT(line_group_id) DO UPDATE SET name = excluded.name
+            ON CONFLICT (line_group_id) DO UPDATE SET name = excluded.name
         `, [id, name]);
 
         return { success: true, message: '資料插入或更新成功' }; // 返回成功訊息

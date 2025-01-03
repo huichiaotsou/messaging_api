@@ -19,6 +19,7 @@ app.get('/webhook', (req, res) => {
 
 app.post('/webhook', middleware(config.line), async (req, res) => {
   try {
+    console.log("/webhook, req.body.events[0]: ", req.body.events[0]);
     await recordGroupID(req.body.events[0])
     res.status(200).send('OK');
   } catch(err) {

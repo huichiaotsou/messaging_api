@@ -15,7 +15,7 @@ db.serialize(() => {
     db.run(`
         CREATE TABLE IF NOT EXISTS groups (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            ling_group_id TEXT NOT NULL UNIQUE, 
+            line_group_id TEXT NOT NULL UNIQUE, 
             name TEXT NOT NULL
         );
     `, (err) => {

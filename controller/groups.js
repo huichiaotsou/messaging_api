@@ -1,7 +1,7 @@
 const Groups = require("../model/groups");
 const sendToGroup = require("../utils/line");
 
-async function recordGroupID(event) {    
+async function recordGroupID(event) {
     const { groupId } = event.source;
     const message = event.message.text
     
@@ -26,4 +26,28 @@ async function recordGroupID(event) {
     return;
 };
 
-module.exports = recordGroupID;
+async function getAllGroups(event) {
+    try {
+        // 呼叫 Groups 模組查詢所有群組
+        const result = await Groups.getAll();
+        if (!result.success) {
+            return { success: false, message: "取得群組資料失敗", error: result.error };
+        }
+
+        // 格式化群組列表
+        const formattedGroups = result.data.map(group => ({
+            groupID: group.line_group_id, // 修改欄位名稱
+            groupName: group.name,
+        }));
+
+        // 返回格式化的群組資料
+        return { success: true, data: formattedGroups };
+    } catch (err) {
+        return { success: false, message: "取得群組資料時發生錯誤", error: err.message };
+    }
+}
+
+module.exports = {
+    recordGroupID, 
+    getAllGroups
+};

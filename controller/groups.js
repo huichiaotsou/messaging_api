@@ -2,9 +2,11 @@ const Groups = require("../model/groups");
 const sendToGroup = require("../utils/line");
 
 async function recordGroupID(lineEvents) {
+    console.log("lineEvents:", lineEvents);
+    
     for (const event of lineEvents) {
         const { groupId, message } = event.source;
-        console.log("event.source: ", event.source);
+        console.log("event: ", event);
         
         if (event.source.type !== 'group') {
             // 若非群組訊息則跳過

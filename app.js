@@ -4,7 +4,7 @@ const { Client, middleware } = require("@line/bot-sdk");
 const config = require("./config.json");
 const app = express();
 const client = new Client(config.line);
-const recordGroupID = require("./controller/groups");
+const {recordGroupID, getAllGroups} = require("./controller/groups");
 
 // 啟動伺服器
 const PORT = config.server.port;
@@ -29,8 +29,8 @@ app.post('/webhook', middleware(config.line), async (req, res) => {
 
 app.get('/groups', async (req, res) => {
   try {
-    const groups = await recordGroupID(req.body.events[0])
-    res.status(200).send('OK');
+    const groups = await getAllGroups();
+    res.status(200).send(groups);
   } catch(err) {
     console.error(err)
   }

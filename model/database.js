@@ -14,9 +14,10 @@ const db = new sqlite3.Database('./thehopebot.db', (err) => {
 db.serialize(() => {
     db.run(`
         CREATE TABLE IF NOT EXISTS groups (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL
-        )
+            id INTEGER PRIMARY KEY AUTOINCREMENT, -- 自動遞增的整數主鍵
+            ling_group_id TEXT NOT NULL UNIQUE,   -- 唯一且不能為空
+            name TEXT NOT NULL                    -- 群組名稱
+        );
     `, (err) => {
         if (err) {
             console.error('groups 表格創建失敗：', err.message);
